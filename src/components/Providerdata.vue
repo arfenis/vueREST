@@ -43,6 +43,12 @@
         </div>
         <div class="dropdown-divider"></div>
         <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-3">
+                <p>  Telefonos: <br /><strong>{{companyData.telephone}}</strong> </p> <br />
+            </div>
+        </div>
+        <div class="dropdown-divider"></div>
+        <div class="row">
             <div class="col-sm-12 col-md-12">
                 <input type="checkbox" id="checkbox" checked v-if="companyData.public_check==true" disabled>
                 <input type="checkbox" id="checkbox" v-else-if="companyData.public_check==false" disabled>

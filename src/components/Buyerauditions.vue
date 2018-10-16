@@ -1,7 +1,6 @@
 <template>
-
-  <div style="text-align:center;">
-     <h1 style="text-align:left;"> {{title}} </h1>
+    <div>
+    <h1 style="text-align:left;"> {{title}} </h1>
      <label>Buscar </label>
      <input placeholder="Nombre de la compa;ia" v-model="filter.search" v-on:keyup="len" type="text">
 
@@ -27,57 +26,60 @@
      <table class="table">
        <thead>
          <tr>
-           <th scope="col">Compañia</th>
-           <th scope="col">Invitaciones</th>
-           <th scope="col">Cantidad adjudicados</th>
-           <th scope="col">Cantidad participadas</th>
-           <th scope="col">Cantidad bloqueos</th>
-           <th scope="col">Cantidad de clientes</th>
+           <th scope="col">L. Pub.</th>
+           <th scope="col">Empresa</th>
+           <th scope="col">Licitaciones colocadas</th>
+           <th scope="col">Licitaciones con ofertas</th>
+           <th scope="col">$</th>
+           <th scope="col">Total Adjudicado</th>
+           <th scope="col">Indice de ahorro</th>
+           <th scope="col">Estado</th>
+           <th scope="col">Plan</th>
+           <th scope="col">Dias restantes de servicio</th>
            <th scope="col">Acción</th>
          </tr>
        </thead>
        <tbody>
-        <tr v-for="provider in providers" v-bind:key="provider.id">
-            <td scope="row">{{provider.company_name}}</td>
-            <td>{{provider.invitations_count}}</td>
-            <td>{{provider.adjudicated_count}}</td>
-            <td>{{provider.participated_count}}</td>
-            <td>{{provider.total_blocks}}</td>
-            <td>{{provider.total_clients}}</td>
-            <td><router-link :to="{ name: 'providerdetails', params: { providerId: provider.id, providerName: provider.company_name}}">Accion</router-link></td>
+        <tr v-for="buyer in buyer_info" v-bind:key="buyer.id">
+            <td scope="row">
+                <input type="checkbox" id="checkbox" checked v-if="buyer.bidding_public==true" disabled>
+                <input type="checkbox" id="checkbox" v-else-if="buyer.bidding_public==false" disabled>
+            </td>
+            <td>{{buyer.company_name}}</td>
+            <td>{{buyer.bidding_count}}</td>
+            <td>{{buyer.offers_count}}</td>
+            <td>{{buyer.currency_symbol}}</td>
+            <td>{{buyer.currency_symbol}}{{buyer.adjudicated_count}}</td>
+            <td>30%</td>
+            <td>{{buyer.status_name}}</td>
+            <td>3 meses</td>
+            <td>3</td>
+            <td>icono.png</td>
         </tr>
       </tbody>
      </table>
-    </div>
 
+    </div>
 </template>
 
 <script>
 import _ from 'lodash'
 
-export default{
-
-  name: 'providers_info',
+export default {
+  name: 'buyer_info',
   data () {
     return {
-      providers: [],
-      title: 'Proveedores',
-      provider_info: {
-        id: '',
-        company_name: '',
-        invitations_count: '',
-        participated_count: '',
-        adjudicated_count: '',
-        total_clients: ''
-      },
+      buyer_info: [],
+      title: 'Compradores',
       pagination: {},
       edit: false,
       filter: {
         search: '',
         industry: '',
-        category: '',
+        filters: '',
         date: '',
-        provider: ''
+        region: '',
+        status: ''
       },
       categories: [],
       categories_data: {
@@ -85,6 +87,7 @@ export default{
         category_name: '',
         industry_id: ''
       },
+      regions: [],
       industries: [],
       industries_data: {
         id: '',
@@ -105,11 +108,11 @@ export default{
   },
   methods: {
     fetchAuditions () {
-      fetch('http://127.0.0.1:8000/api/audits')
+      fetch('http://127.0.0.1:8000/api/buyers')
         .then(res => res.json())
         .then(res => {
-          this.providers = res.provider_info
-          this.categories = res.categories
+          this.buyer_info = res.buyer_info
+          this.regions = res.regions
           this.industries = res.industries
         })
     },

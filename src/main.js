@@ -8,7 +8,7 @@ import axios from 'axios'
 import VueRouter from 'vue-router'
 import Providerauditions from './components/Providerauditions'
 import Providerdetails from './components/Providerdetails'
-import Providerinfo from './components/Providerinfo'
+import Buyerauditions from './components/Buyerauditions'
 
 Vue.use(VueAxios, axios)
 Vue.use(VueRouter)
@@ -19,18 +19,19 @@ const router = new VueRouter({
   base: __dirname,
   routes: [
     {
-      path: '/',
+      name: 'provider',
+      path: '/providers',
       component: Providerauditions
     },
     {
-      name: 'provider',
+      name: 'providerdetails',
       path: '/provider/:providerId',
       component: Providerdetails
     },
     {
-      name: 'providerinfo',
-      path: '/info',
-      component: Providerinfo
+      name: 'buyer',
+      path: '/buyers',
+      component: Buyerauditions
     }
   ]
 })
@@ -47,10 +48,10 @@ new Vue({
         <div class="collapse navbar-collapse" id="navbarsExample03">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-            <router-link to="/" class="nav-link" style="color:white;">Proveedores</router-link>
+            <router-link to="/providers" class="nav-link" style="color:white;">Proveedores</router-link>
             </li>
             <li class="nav-item">
-            <router-link to="/" class="nav-link" style="color:white;">Compradores</router-link>
+            <router-link to="/buyers" class="nav-link" style="color:white;">Compradores</router-link>
             </li>
             <li class="nav-item">
             <router-link to="/" class="nav-link" style="color:white;">Items</router-link>
