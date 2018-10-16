@@ -1,20 +1,27 @@
 <template :name ="provider.id">
   <div style="text-align:center;">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light rounded">
-        <div class="navbar" id="navbarsExample09">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item" @click="menu = 1">
-              <a class="nav-link">Licitaciones</a>
-            </li>
-            <li class="nav-item" @click="menu = 2">
-              <a class="nav-link">General</a>
-            </li>
-          </ul>
-        </div>
-      </nav>
-    <h1> {{title}}</h1>
-    <h2> {{provider.company_name}} </h2>
-
+    <div class="row">
+      <div class="col-sm-12 col-md-12" style="text-align:left;">
+        <h1> {{title}}</h1>
+        <h2> {{provider.company_name}} </h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 col-md-12">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light rounded">
+          <div class="navbar" id="navbarsExample09">
+            <ul class="nav nav-tabs">
+              <li class="nav-item" @click="menu = 1">
+                <a class="nav-link">Licitaciones</a>
+              </li>
+              <li class="nav nav-tabs" @click="menu = 2">
+                <a class="nav-link">General</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </div>
     <div id="providerdetails" v-if="menu==1">
       <label>Buscar </label>
       <input placeholder="Nombre de la compa;ia" v-model="filter.search" v-on:keyup="len" type="text">
@@ -36,7 +43,7 @@
           <option v-for="status in status_data" :key="status.id" :value="status.id">{{status.status_name}}</option>
         </select>
       <div class="row">
-        <div class="col-sm-10">
+        <div class="col-sm-12 col-md-12">
           <table class="table">
             <thead>
               <tr>
@@ -79,7 +86,7 @@ export default{
     return {
       menu: 1,
       biddings: [],
-      title: 'Provider',
+      title: 'Proveedores',
       biddings_info: {
         id: '',
         company_name: '',

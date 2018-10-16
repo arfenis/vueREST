@@ -1,7 +1,7 @@
 <template>
 
   <div style="text-align:center;">
-     <h1> {{title}} </h1>
+     <h1 style="text-align:left;"> {{title}} </h1>
      <label>Buscar </label>
      <input placeholder="Nombre de la compa;ia" v-model="filter.search" v-on:keyup="len" type="text">
 
