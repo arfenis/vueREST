@@ -42,6 +42,11 @@
           <option value="">Estado</option>
           <option v-for="status in status_data" :key="status.id" :value="status.id">{{status.status_name}}</option>
         </select>
+
+        <button class="btn btn-secondary" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Exportar
+        </button>
+
       <div class="row">
         <div class="col-sm-12 col-md-12">
           <table class="table">

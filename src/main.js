@@ -9,7 +9,10 @@ import VueRouter from 'vue-router'
 import Providerauditions from './components/Providerauditions'
 import Providerdetails from './components/Providerdetails'
 import Buyerauditions from './components/Buyerauditions'
+import 'v2-datepicker/lib/index.css'
+import V2Datepicker from 'v2-datepicker'
 
+Vue.use(V2Datepicker)
 Vue.use(VueAxios, axios)
 Vue.use(VueRouter)
 Vue.config.productionTip = false

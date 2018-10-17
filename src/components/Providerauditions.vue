@@ -5,6 +5,9 @@
      <label>Buscar </label>
      <input placeholder="Nombre de la compa;ia" v-model="filter.search" v-on:keyup="len" type="text">
 
+      <span>Fecha: </span>
+      <v2-datepicker-range v-model="filter.date" lang="en" format="yyyy-MM-DD" v-on:change="postRequest"></v2-datepicker-range>
+
       <span>Industria: </span>
       <select v-model="filter.industry">
         <option value=" ">Industria</option>
@@ -23,6 +26,10 @@
         <option value="p_blockeds">Proveedores bloqueados</option>
         <option value="p_without_oferts">Proveedores sin ofertas</option>
       </select>
+
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Exportar
+        </button>
 
      <table class="table">
        <thead>

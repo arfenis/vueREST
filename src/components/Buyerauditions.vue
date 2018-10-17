@@ -3,31 +3,35 @@
     <h1 style="text-align:left;"> {{title}} </h1>
      <label>Buscar </label>
      <input placeholder="Nombre de la compa;ia" v-model="filter.search" v-on:keyup="len" type="text">
+      <span>Fecha: </span>
+      <v2-datepicker-range v-model="filter.date" lang="en" format="yyyy-MM-DD" v-on:change="postRequest"></v2-datepicker-range>
 
       <span>Industria: </span>
-      <select v-model="filter.industry">
+      <select v-model="filter.industry" v-on:change="postRequest">
         <option value=" ">Industria</option>
         <option v-for="industry in industries" :key="industry.id" :value=industry.id>{{industry.industry_name}}</option>
       </select>
 
-     <span>Categoria: </span>
-      <select v-model="filter.category" v-on:change="postRequest">
-        <option value=" ">Categoria</option>
-        <option v-for="category in Fetchfilter" :key="category.id" :value=category.id>{{category.category_name}}</option>
+     <span>Region: </span>
+      <select v-model="filter.region" v-on:change="postRequest">
+        <option value=" ">Region</option>
+        <option v-for="region in regions" :key="region.id" :value=region.id>{{region.region_name}}</option>
       </select>
 
       <span>Filtros: </span>
-      <select v-model="filter.provider" v-on:change="postRequest">
+      <select v-model="filter.provider" >
         <option value=" ">Estado</option>
-        <option value="p_blockeds">Proveedores bloqueados</option>
-        <option value="p_without_oferts">Proveedores sin ofertas</option>
+        <option value="p_blockeds">Clientes con 0 licitaciones</option>
+        <option value="p_blockeds">Licitaciones cerradas sin adjudicar</option>
+        <option value="p_blockeds">Licitaciones desiertas con ofertas</option>
+        <option value="p_blockeds">Licitaciones desiertas sin ofertas</option>
       </select>
 
      <table class="table">
        <thead>
          <tr>
            <th scope="col">L. Pub.</th>
-           <th scope="col">Empresa</th>
+           <th scope="col">Empresa </th>
            <th scope="col">Licitaciones colocadas</th>
            <th scope="col">Licitaciones con ofertas</th>
            <th scope="col">$</th>
@@ -43,9 +47,14 @@
         <tr v-for="buyer in buyer_info" v-bind:key="buyer.id">
             <td scope="row">
                 <input type="checkbox" id="checkbox" checked v-if="buyer.bidding_public==true" disabled>
-                <input type="checkbox" id="checkbox" v-else-if="buyer.bidding_public==false" disabled>
             </td>
-            <td>{{buyer.company_name}}</td>
+            <td>{{buyer.company_name}}<a data-toggle="collapse" :href="'#multiCollapseExample-'+buyer.id" :aria-controls="'multiCollapseExample-'+buyer.id"><i class="glyphicon glyphicon-triangle-bottom"></i></a>
+              <div class="collapse multi-collapse" :id="'multiCollapseExample-'+buyer.id">
+                <div class="card card-body">
+                  Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+                </div>
+              </div>
+            </td>
             <td>{{buyer.bidding_count}}</td>
             <td>{{buyer.offers_count}}</td>
             <td>{{buyer.currency_symbol}}</td>
@@ -118,9 +127,9 @@ export default {
     },
     postRequest () {
       let me = this
-      this.axios.post('http://127.0.0.1:8000/api/providers', this.filter)
+      this.axios.post('http://127.0.0.1:8000/api/buyers/filter', this.filter)
         .then(function (response) {
-          me.providers = response.data.provider_info
+          me.buyer_info = response.data.buyer_info
         })
         .catch(function (error) {
           console.log(error)
