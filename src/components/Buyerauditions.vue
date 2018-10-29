@@ -44,16 +44,11 @@
          </tr>
        </thead>
        <tbody>
-        <tr v-for="buyer in buyer_info" v-bind:key="buyer.id">
+        <tr v-for="buyer in buyer_info" v-bind:key="buyer.id" @click="toggle(buyer.id)" :class="{ opened: opened.includes(buyer.id) }">
             <td scope="row">
                 <input type="checkbox" id="checkbox" checked v-if="buyer.bidding_public==true" disabled>
             </td>
-            <td>{{buyer.company_name}}<a data-toggle="collapse" :href="'#multiCollapseExample-'+buyer.id" :aria-controls="'multiCollapseExample-'+buyer.id"><i class="glyphicon glyphicon-triangle-bottom"></i></a>
-              <div class="collapse multi-collapse" :id="'multiCollapseExample-'+buyer.id">
-                <div class="card card-body">
-                  Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-                </div>
-              </div>
+            <td>{{buyer.company_name}}<a data-toggle="collapse" :href="'#multiCollapseExample-'+buyer.id" :aria-expanded="false" :aria-controls="'multiCollapseExample-'+buyer.id"><i class="glyphicon glyphicon-triangle-bottom"></i></a>
             </td>
             <td>{{buyer.bidding_count}}</td>
             <td>{{buyer.offers_count}}</td>
@@ -79,6 +74,7 @@ export default {
   data () {
     return {
       buyer_info: [],
+      opened: [],
       title: 'Compradores',
       pagination: {},
       edit: false,
@@ -124,6 +120,14 @@ export default {
           this.regions = res.regions
           this.industries = res.industries
         })
+    },
+    toggle (id) {
+      const index = this.opened.indexOf(id)
+      if (index > -1) {
+        this.opened.splice(index, 1)
+      } else {
+        this.opened.push(id)
+      }
     },
     postRequest () {
       let me = this
