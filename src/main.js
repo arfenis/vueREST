@@ -9,6 +9,8 @@ import VueRouter from 'vue-router'
 import Providerauditions from './components/Providerauditions'
 import Providerdetails from './components/Providerdetails'
 import Buyerauditions from './components/Buyerauditions'
+import Buyerdetails from './components/Buyerdetails'
+import BuyerNavbar from './components/BuyerNavbar'
 import 'v2-datepicker/lib/index.css'
 import V2Datepicker from 'v2-datepicker'
 import VueMaterial from 'vue-material'
@@ -38,6 +40,11 @@ const router = new VueRouter({
       name: 'buyer',
       path: '/buyers',
       component: Buyerauditions
+    },
+    {
+      name: 'buyerdetails',
+      path: '/buyer/:companyId',
+      component: Buyerdetails
     }
   ]
 })
@@ -69,3 +76,5 @@ new Vue({
     </div>
     `
 }).$mount('#app')
+
+Vue.component('buyer-navbar', BuyerNavbar)
