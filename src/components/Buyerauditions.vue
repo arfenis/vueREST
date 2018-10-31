@@ -30,25 +30,16 @@
      <table class="table">
        <thead>
          <tr>
-           <th scope="col">L. Pub.</th>
-           <th scope="col">Empresa </th>
-           <th scope="col">Licitaciones colocadas</th>
-           <th scope="col">Licitaciones con ofertas</th>
-           <th scope="col">$</th>
-           <th scope="col">Total Adjudicado</th>
-           <th scope="col">Indice de ahorro</th>
-           <th scope="col">Estado</th>
-           <th scope="col">Plan</th>
-           <th scope="col">Dias restantes de servicio</th>
-           <th scope="col">Acción</th>
+           <th v-for="column in colums_titles" v-bind:key="column.id">{{column.name}}</th>
          </tr>
        </thead>
        <tbody>
-        <tr v-for="buyer in buyer_info" v-bind:key="buyer.id" @click="toggle(buyer.id)" :class="{ opened: opened.includes(buyer.id) }">
+         <template v-for="buyer in buyer_info">
+        <tr v-bind:key="buyer.id">
             <td scope="row">
                 <input type="checkbox" id="checkbox" checked v-if="buyer.bidding_public==true" disabled>
             </td>
-            <td>{{buyer.company_name}}<a data-toggle="collapse" :href="'#multiCollapseExample-'+buyer.id" :aria-expanded="false" :aria-controls="'multiCollapseExample-'+buyer.id"><i class="glyphicon glyphicon-triangle-bottom"></i></a>
+            <td>{{buyer.company_name}}<a @click="buyer.contentVisible = !buyer.contentVisible"><i class="glyphicon glyphicon-triangle-bottom"></i></a>
             </td>
             <td>{{buyer.bidding_count}}</td>
             <td>{{buyer.offers_count}}</td>
@@ -60,6 +51,22 @@
             <td>3</td>
             <td>icono.png</td>
         </tr>
+          <template v-if="buyer.contentVisible" v-for="buyer_usuarios in buyer.usuarios">
+            <tr v-bind:key="buyer_usuarios.user_id">
+                  <td></td>
+                  <td>{{buyer_usuarios.firstname}}({{buyer_usuarios.role}}) </td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td>{{buyer.status_name}}</td>
+                  <td>3 meses</td>
+                  <td>3</td>
+                  <td></td>
+            </tr>
+          </template>
+         </template>
       </tbody>
      </table>
 
@@ -73,8 +80,42 @@ export default {
   name: 'buyer_info',
   data () {
     return {
+      colums_titles: [
+        {
+          name: 'L. Publicas'
+        },
+        {
+          name: 'Empresa'
+        },
+        {
+          name: 'Licitaciones colocadas'
+        },
+        {
+          name: 'Licitaciones con ofertas'
+        },
+        {
+          name: '$'
+        },
+        {
+          name: 'Total adjudicado'
+        },
+        {
+          name: 'Indice de ahorro'
+        },
+        {
+          name: 'Estado'
+        },
+        {
+          name: 'Plan'
+        },
+        {
+          name: 'Dias restantes de servicio'
+        },
+        {
+          name: 'Accion'
+        }
+      ],
       buyer_info: [],
-      opened: [],
       title: 'Compradores',
       pagination: {},
       edit: false,

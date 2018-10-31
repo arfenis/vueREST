@@ -11,10 +11,13 @@ import Providerdetails from './components/Providerdetails'
 import Buyerauditions from './components/Buyerauditions'
 import 'v2-datepicker/lib/index.css'
 import V2Datepicker from 'v2-datepicker'
+import VueMaterial from 'vue-material'
+import 'vue-material/dist/vue-material.css'
 
 Vue.use(V2Datepicker)
 Vue.use(VueAxios, axios)
 Vue.use(VueRouter)
+Vue.use(VueMaterial)
 Vue.config.productionTip = false
 
 const router = new VueRouter({
