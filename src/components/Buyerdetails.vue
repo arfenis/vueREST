@@ -6,6 +6,7 @@
       </div>
     </div>
     <buyer-navbar v-bind:menu=menu.main_menu> </buyer-navbar>
+    <h1> {{company_info.company_name}} </h1>
     <div class="row">
         <div class="col-sm-12 col-md-12">
             <nav class="navbar navbar-expand-lg navbar-light bg-light rounded">
@@ -31,17 +32,17 @@
             </nav>
         </div>
     </div>
-    <div id="biddings" v-if="menu.sub_menu==1">
-      <biddingcomponent> </biddingcomponent>
+    <div id="biddingcomponent" v-if="menu.sub_menu==1">
+      <biddingcomponent :biddingsData="biddings"> </biddingcomponent>
     </div>
     <div id="generalinfo" v-if="menu.sub_menu==2">
-      <buyerdata> </buyerdata>
+      <buyerdata v-bind:companyData="company_info"> </buyerdata>
     </div>
     <div id="usersinfo" v-if="menu.sub_menu==3">
-      <userscomponent> </userscomponent>
+      <userscomponent :companyUsers=company_info.usuarios :roles=roles> </userscomponent>
     </div>
     <div id="providerinfo" v-if="menu.sub_menu==4">
-      <providercomponent> </providercomponent>
+      <providercomponent :companyProviders=company_info.providers :categories=categories :cities=cities> </providercomponent>
     </div>
     <div id="itemsinfo" v-if="menu.sub_menu==5">
       <itemscomponent> </itemscomponent>
@@ -51,7 +52,6 @@
 </template>
 
 <script>
-import _ from 'lodash'
 import BiddingComponent from './BuyerComponents/BiddingComponent.vue'
 import BuyerData from './BuyerComponents/BuyerData.vue'
 import UsersComponent from './BuyerComponents/UsersComponent.vue'
@@ -64,11 +64,16 @@ export default{
     return {
       menu: {
         main_menu: 1,
-        sub_menu: 1
+        sub_menu: 2
       },
       title: 'Compradores',
       company_id: this.$route.params.companyId,
-      company_info: {}
+      company_info: {},
+      biddings: {},
+      roles: {},
+      provider: {},
+      categories: {},
+      cities: {}
     }
   },
   components: {
@@ -82,41 +87,23 @@ export default{
     this.fetchBiddings()
   },
   computed: {
-    Fetchfilter () {
-      return this.categories.filter(cate => {
-        return parseInt(cate.industry_id) === parseInt(this.filter.industry)
-      })
-    }
+
   },
   methods: {
     fetchBiddings () {
       fetch('http://127.0.0.1:8000/api/buyer/' + this.company_id)
         .then(res => res.json())
         .then(res => {
-          this.company_info = res.company_info[0]
-        })
-    },
-    postRequest () {
-      let me = this
-      this.axios.post('http://127.0.0.1:8000/api/providers/filter', this.filter)
-        .then(function (response) {
-          me.biddings = response.data
-        })
-        .catch(function (error) {
-          console.log(error)
+          this.company_info = res.company_info
+          this.biddings = res.bidding_info
+          this.roles = res.roles
+          this.categories = res.categories
+          this.cities = res.cities
         })
     },
     blockprovider () {
       console.log('clicked')
-    },
-    len: _.debounce(
-      function () {
-        this.messageLength = this.filter.search.length
-        console.log(this.filter.search)
-        this.postRequest()
-      },
-      800
-    )
+    }
   }
 }
 </script>
