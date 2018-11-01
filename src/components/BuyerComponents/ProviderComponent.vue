@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1> Provider </h1>
+        <h1> Proveedores del usuario </h1>
              <label>Buscar </label>
         <input placeholder="No. de la licitacion" v-model="filter.search" type="text">
 
@@ -55,8 +55,7 @@ export default {
   name: 'providercomponent',
   props: {
     companyProviders: Array,
-    categories: Array,
-    citites: Array
+    categories: Array
   },
   data () {
     return {

@@ -33,7 +33,7 @@
         </div>
     </div>
     <div id="biddingcomponent" v-if="menu.sub_menu==1">
-      <biddingcomponent :biddingsData="biddings"> </biddingcomponent>
+      <biddingcomponent :biddingsData="company_info.biddings"> </biddingcomponent>
     </div>
     <div id="generalinfo" v-if="menu.sub_menu==2">
       <buyerdata v-bind:companyData="company_info"> </buyerdata>
@@ -42,10 +42,10 @@
       <userscomponent :companyUsers=company_info.usuarios :roles=roles> </userscomponent>
     </div>
     <div id="providerinfo" v-if="menu.sub_menu==4">
-      <providercomponent :companyProviders=company_info.providers :categories=categories :cities=cities> </providercomponent>
+      <providercomponent :companyProviders=company_info.providers :categories=categories> </providercomponent>
     </div>
     <div id="itemsinfo" v-if="menu.sub_menu==5">
-      <itemscomponent> </itemscomponent>
+      <itemscomponent :companyItems=company_info.items :categories=categories> </itemscomponent>
     </div>
 
   </div>
@@ -69,11 +69,8 @@ export default{
       title: 'Compradores',
       company_id: this.$route.params.companyId,
       company_info: {},
-      biddings: {},
       roles: {},
-      provider: {},
-      categories: {},
-      cities: {}
+      categories: {}
     }
   },
   components: {
@@ -95,7 +92,6 @@ export default{
         .then(res => res.json())
         .then(res => {
           this.company_info = res.company_info
-          this.biddings = res.bidding_info
           this.roles = res.roles
           this.categories = res.categories
           this.cities = res.cities
