@@ -2,21 +2,21 @@
     <div style="text-align:center;">
         <h1> Bidding </h1>
         <label>Buscar </label>
-     <input placeholder="No. de la licitacion" v-model="filter.search" type="text">
+     <input placeholder="No. de la licitacion" v-model="filter.search" v-on:keyup="len" type="text">
 
       <span>Fecha: </span>
-      <v2-datepicker-range v-model="filter.date" lang="en" format="yyyy-MM-DD"></v2-datepicker-range>
+      <v2-datepicker-range v-model="filter.date" lang="en" format="yyyy-MM-DD" @change="postRequest"></v2-datepicker-range>
 
       <span>Tipo: </span>
-      <select v-model="filter.type">
+      <select v-model="filter.type" @change="postRequest">
         <option value=" " selected>Tipo</option>
         <option value=1>Privada</option>
         <option value=2>Publica</option>
       </select>
 
      <span>Estado: </span>
-      <select v-model="filter.status">
-        <option value=" " selected>Estado</option>
+      <select v-model="filter.status" @change="postRequest">
+        <option value=" ">Estado</option>
         <option v-for="status in statusData" :key="status.id" :value=status.id>{{status.name}}</option>
       </select>
 
@@ -38,7 +38,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="bidding in biddingsData" v-bind:key="bidding.id">
+              <tr v-for="bidding in biddingsdatabuyer" v-bind:key="bidding.id">
                   <td scope="row">{{bidding.bidding_code}}</td>
                   <td><p class="tbladju1"> <strong> {{bidding.bidding_name}} </strong></p>
                       <p class="tlbadju2">{{bidding.user_name}}</p></td>
@@ -57,6 +57,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 
 export default {
   name: 'biddingcomponent',
@@ -65,6 +66,7 @@ export default {
   },
   data () {
     return {
+      biddingsdatabuyer: this.biddingsData,
       statusData: [
         {
           id: 7,
@@ -83,15 +85,36 @@ export default {
           name: 'Pendiente'
         }
       ],
-      filter: [
+      filter:
         {
           search: '',
           status: '',
           type: '',
-          date: ''
+          date: '',
+          component: 'bidding',
+          company_id: this.$route.params.companyId
         }
-      ]
     }
+  },
+  methods: {
+    postRequest () {
+      let me = this
+      this.axios.post('http://127.0.0.1:8000/api/buyer/filter', this.filter)
+        .then(function (response) {
+          me.biddingsdatabuyer = response.data.bidding_info
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+    },
+    len: _.debounce(
+      function () {
+        this.messageLength = this.filter.search.length
+        console.log(this.filter.search)
+        this.postRequest()
+      },
+      800
+    )
   }
 }
 

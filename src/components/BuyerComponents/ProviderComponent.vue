@@ -2,16 +2,16 @@
     <div>
         <h1> Proveedores del usuario </h1>
              <label>Buscar </label>
-        <input placeholder="No. de la licitacion" v-model="filter.search" type="text">
+        <input placeholder="No. de la licitacion" v-model="filter.search" type="text" @change="postRequest">
 
         <span>Categorias: </span>
-        <select v-model="filter.category">
+        <select v-model="filter.category" @change="postRequest">
             <option value=" " selected>Categoria</option>
             <option v-for="category in categories" :key="category.id" :value=category.id>{{category.category_name}}</option>
         </select>
 
         <span>Estado: </span>
-        <select v-model="filter.status">
+        <select v-model="filter.status" @change="postRequest">
             <option value=" " selected>Estado</option>
             <option v-for="status in statusData" :key="status.id" :value=status.id>{{status.name}}</option>
         </select>
@@ -34,7 +34,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="providers in companyProviders" v-bind:key="providers.id">
+                <tr v-for="providers in company_providers" v-bind:key="providers.id">
                     <td scope="row">{{providers.company_name}}</td>
                     <td><p> {{providers.commercial_name}} </p>
                     <td scope="row">{{providers.category_name}}</td>
@@ -51,6 +51,8 @@
 </template>
 
 <script>
+import _ from 'lodash'
+
 export default {
   name: 'providercomponent',
   props: {
@@ -59,6 +61,7 @@ export default {
   },
   data () {
     return {
+      company_providers: this.companyProviders,
       statusData: [
         {
           id: 13,
@@ -69,15 +72,35 @@ export default {
           name: 'Activo'
         }
       ],
-      filter: [
+      filter:
         {
           search: '',
-          rol: '',
+          category: '',
           status: '',
-          date: ''
+          component: 'providers',
+          company_id: this.$route.params.companyId
         }
-      ]
     }
+  },
+  methods: {
+    postRequest () {
+      let me = this
+      this.axios.post('http://127.0.0.1:8000/api/buyer/filter', this.filter)
+        .then(function (response) {
+          me.company_providers = response.data.company_providers
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+    },
+    len: _.debounce(
+      function () {
+        this.messageLength = this.filter.search.length
+        console.log(this.filter.search)
+        this.postRequest()
+      },
+      800
+    )
   }
 }
 
