@@ -2,7 +2,19 @@
     <div class="component">
         <div class="row">
             <div class="col-sm-12 col-md-12">
-                <h3> Datos del usuario </h3> <br />
+                <h3> Datos del usuario </h3>
+                <label class="checkbox-inline" v-if="companyData.enable == true">
+                    Bloquear usuario <br />
+                    <a @click="editEnable(false)" data-toggle="tooltip" title="Bloquear usuario">
+                        <i class="fas fa-lock fa-2x"></i>
+                    </a><br />
+                </label>
+                <label class="checkbox-inline" v-else-if="companyData.enable == false">
+                    Desbloquear usuario<br />
+                    <a @click="editEnable(true)" data-toggle="tooltip" title="Desbloquear usuario">
+                        <i class="fas fa-unlock fa-2x"></i>
+                    </a><br />
+                </label>
             </div>
             <div class="col-sm-12 col-md-12 col-lg-3">
                 <p> <strong> Nombre empresa: </strong> <br />{{companyData.company_name}} </p> <br />
@@ -70,8 +82,31 @@
 
 <script>
 export default {
+  name: 'buyerdata',
   props: {
     companyData: Object
+  },
+  data () {
+    return {
+      company_data: this.companyData
+    }
+  },
+  methods: {
+    editEnable (evalue) {
+      let me = this
+      var option = {
+        name: 'enable',
+        value: evalue,
+        id: this.companyData.id
+      }
+      this.axios.post('http://127.0.0.1:8000/api/buyers/info', option)
+        .then(function (response) {
+          me.companyData.enable = evalue
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+    }
   }
 }
 
