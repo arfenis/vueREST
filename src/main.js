@@ -8,14 +8,18 @@ import axios from 'axios'
 import VueRouter from 'vue-router'
 import Providerauditions from './components/Providerauditions'
 import Providerdetails from './components/Providerdetails'
-import Buyerauditions from './components/Buyerauditions'
+import BuyerRegistered from './components/BuyerRegistered'
+import BuyerPendings from './components/BuyerPendings'
 import Buyerdetails from './components/Buyerdetails'
 import BuyerNavbar from './components/BuyerNavbar'
 import 'v2-datepicker/lib/index.css'
 import V2Datepicker from 'v2-datepicker'
 import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.css'
+import BootstrapVue from 'bootstrap-vue'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
 
+Vue.use(BootstrapVue)
 Vue.use(V2Datepicker)
 Vue.use(VueAxios, axios)
 Vue.use(VueRouter)
@@ -37,9 +41,14 @@ const router = new VueRouter({
       component: Providerdetails
     },
     {
-      name: 'buyer',
-      path: '/buyers',
-      component: Buyerauditions
+      name: 'buyeregistered',
+      path: '/buyers/registered',
+      component: BuyerRegistered
+    },
+    {
+      name: 'buyerpendings',
+      path: '/buyers/pendings',
+      component: BuyerPendings
     },
     {
       name: 'buyerdetails',
@@ -64,7 +73,7 @@ new Vue({
             <router-link to="/providers" class="nav-link" style="color:white;">Proveedores</router-link>
             </li>
             <li class="nav-item">
-            <router-link to="/buyers" class="nav-link" style="color:white;">Compradores</router-link>
+            <router-link to="/buyers/registered" class="nav-link" style="color:white;">Compradores</router-link>
             </li>
             <li class="nav-item">
             <router-link to="/" class="nav-link" style="color:white;">Items</router-link>

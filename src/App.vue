@@ -7,12 +7,12 @@
 <script>
 import Providerauditions from './components/Providerauditions'
 import Providerdetails from './components/Providerdetails'
-import Buyerauditions from './components/Buyerauditions'
+import BuyerRegistered from './components/BuyerRegistered'
 
 export default {
   name: 'App',
   components: {
-    Providerauditions, Providerdetails, Buyerauditions
+    Providerauditions, Providerdetails, BuyerRegistered
   }
 }
 </script>

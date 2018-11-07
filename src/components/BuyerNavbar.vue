@@ -4,14 +4,18 @@
               <nav class="navbar navbar-expand-lg navbar-light bg-light rounded">
                 <div class="navbar" id="navbarsExample09">
                   <ul class="nav nav-tabs">
-                    <li class="nav-item" @click="menu = 1">
-                      <a class="nav-link">Registrados</a>
+                    <li class="nav-item nav-link">
+                      <router-link :to="{ name: 'buyeregistered'}">
+                          Registrados
+                      </router-link>
                     </li>
-                    <li class="nav nav-tabs" @click="menu = 2">
-                      <a class="nav-link">Pendientes</a>
+                    <li class="nav-item nav-link">
+                      <router-link :to="{ name: 'buyerpendings'}">
+                          Pendientes
+                      </router-link>
                     </li>
-                    <li class="nav-item" @click="menu = 3">
-                      <a class="nav-link">Borrados</a>
+                    <li class="nav-item nav-link">
+                          Borrados
                     </li>
                   </ul>
                 </div>
@@ -22,6 +26,7 @@
 
 <script>
 export default {
+  name: 'buyer-navbar',
   props: {
     menu: Number
   }
