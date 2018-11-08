@@ -45,7 +45,7 @@
                         <option v-for="country in countries" :key="country.id" :value=country.id>{{country.country_name}}</option>
                     </select>
                     <span>Region: </span>
-                    <select v-model="selectedRegion">
+                    <select v-model="user_validated.region_id">
                         <option v-for="region in region_list" :key="region.id" :value=region.id>{{region.region_name}}</option>
                     </select>
                     <span>Provincia: </span>
@@ -111,19 +111,29 @@ export default {
       },
       province_list: this.provincies,
       region_list: this.regions,
-      cities_list: this.cities,
-      selectedRegion: this.user_data.region_id
+      cities_list: this.cities
     }
   },
   watch: {
-    selectedRegion () {
+    'user_validated.region_id' () {
+      console.log(this.user_validated.region_id)
       this.province_list = []
       this.cities_list = []
       this.user_validated.province_id = ''
       this.user_validated.city_id = ''
       if (this.user_validated.region_id > 0) {
         this.province_list = this.provincies.filter(prov => {
-          return parseInt(prov.region_id) === parseInt(this.selectedRegion)
+          return parseInt(prov.region_id) === parseInt(this.user_validated.region_id)
+        })
+      }
+    },
+    'user_validated.province_id' () {
+      console.log(this.user_validated.province_id)
+      this.cities_list = []
+      this.user_validated.city_id = ''
+      if (this.user_validated.province_id > 0) {
+        this.cities_list = this.cities.filter(citys => {
+          return parseInt(citys.province_id) === parseInt(this.user_validated.province_id)
         })
       }
     }
