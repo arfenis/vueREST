@@ -36,15 +36,15 @@
             <template v-for="buyer in filteredBuyer">
             <tr v-bind:key="buyer.user_id">
                 <td>{{buyer.company_name}}</td>
-                <td>{{buyer.user_name}}</td>
+                <td>{{buyer.firstname}} {{buyer.lastname}}</td>
                 <td>{{buyer.email}}</td>
                 <td> 899900 </td>
                 <td>{{buyer.city_name}}</td>
                 <td v-if="buyer.status_id == 14">Registrar</td>
                 <td v-else>{{buyer.status_name}}</td>
                 <td>
-                    <i class="glyphicon glyphicon-eye-open" @click="showModal(buyer.user_id, 1)"> </i>
-                    <i class="glyphicon glyphicon-pencil" @click="showModal(buyer.user_id, 2)"></i>
+                    <i class="glyphicon glyphicon-eye-open" @click="showModal(buyer.user_id)"> </i>
+                    <i class="glyphicon glyphicon-pencil" @click="showModalEdit(buyer.user_id)"></i>
                     <i class="glyphicon glyphicon-trash" @click="showModal"></i>
                 </td>
             </tr>
@@ -52,18 +52,28 @@
           </tbody>
         </table>
       </div>
-        <modal :user_data=user_data v-show="isModalVisible" @close="closeModal"/>
+        <editmodal :user_data=user_info
+                   :regions=regions
+                   :provincies=provincies
+                   :cities=cities
+                   :industries=industries
+                   :countries=countries
+                   v-if="isModalVisibleEdit"
+                   @close="closeModalEdit"
+        />
     </div>
 </template>
 
 <script>
 import modal from './BuyerComponents/DataModalComponent.vue'
+import editmodal from './BuyerComponents/DataModalComponentEdit.vue'
 import _ from 'lodash'
 
 export default {
   name: 'buyer_info',
   components: {
-    modal
+    modal,
+    editmodal
   },
   data () {
     return {
@@ -122,8 +132,10 @@ export default {
       industries: [],
       cities: [],
       provincies: [],
+      countries: [],
       isModalVisible: false,
-      user_data: Object
+      isModalVisibleEdit: false,
+      user_info: {}
     }
   },
   created () {
@@ -149,6 +161,7 @@ export default {
           this.industries = res.industries
           this.cities = res.cities
           this.provincies = res.provincies
+          this.countries = res.countries
         })
     },
     filteredByStatus (id, buyers) {
@@ -169,17 +182,27 @@ export default {
         }
       })
     },
-    showModal (userdata, action) {
+    showModal (userdata) {
       let data = this.buyer_info.filter((buyer) => {
         return buyer.user_id === userdata
       })
-      this.user_data = data[0]
-      this.user_data.action = action
+      this.user_info = data[0]
       this.isModalVisible = true
     },
     closeModal () {
       this.isModalVisible = false
     },
+    showModalEdit (userdata) {
+      let data = this.buyer_info.filter((buyer) => {
+        return buyer.user_id === userdata
+      })
+      this.user_info = data[0]
+      this.isModalVisibleEdit = true
+    },
+    closeModalEdit () {
+      this.isModalVisibleEdit = false
+    },
+
     len: _.debounce(
       function () {
         this.messageLength = this.filter.search.length

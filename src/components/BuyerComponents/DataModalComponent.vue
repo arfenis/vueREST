@@ -12,30 +12,6 @@
 
             <div class="modal-body">
                 <slot name="body">
-                    <label>Nombre de la empresa </label>
-                    <input v-model="user_data.company_name" type="text" :disabled= true v-if="user_data.action === 1">
-                    <input v-model="user_data.company_name" type="text" :disabled= false v-else>
-                    <br />
-                    <label>Nombre de ID tributario </label>
-                    <input v-model="user_data.tax_number" type="text" :disabled="user_data.action === 1 ? true : false">
-                    <br />
-                    <label>Nombre comercial </label>
-                    <input v-model="user_data.company_name" type="text" :disabled="user_data.action === 1 ? true : false">
-                    <br />
-                    <label>Persona de contacto </label>
-                    <input v-model="user_data.user_name" type="text" :disabled="user_data.action === 1 ? true : false">
-                    <br />
-                    <label>Correo electronico </label>
-                    <input v-model="user_data.email" type="text" :disabled="user_data.action === 1 ? true : false">
-                    <br />
-                    <label>Confirmar correo electronico </label>
-                    <input v-model="user_data.email" type="text" :disabled="user_data.action === 1 ? true : false">
-                    <br />
-                    <label>Direccion principal </label>
-                    <input v-model="user_data.address_description" type="text" :disabled="user_data.action === 1 ? true : false">
-                    <br />
-                    <label>Website </label>
-                    <input v-model="user_data.Website" type="text" :disabled="user_data.action === 1 ? true : false">
                 </slot>
             </div>
 
@@ -86,7 +62,7 @@ export default {
 }
 
 .modal-container {
-  width: 300px;
+  width: 80%;
   margin: 0px auto;
   padding: 20px 30px;
   background-color: #fff;
